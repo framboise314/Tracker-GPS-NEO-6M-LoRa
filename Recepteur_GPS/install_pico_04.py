@@ -59,10 +59,15 @@ while True:
     if uart.any():  # si nous avons reçu quelque chose...
         donnees_brutes = str(uart.readline())
         # print(donnees_brutes)
-        for x in range(0, len(donnees_brutes)):
+        # Ce try permet d'éliminer l'erreur d'index qui se produit de temps en temps
+        try:
+            for x in range(0, len(donnees_brutes)):
             # print("X = ",x)
             # print("longueur :", len(donnees_brutes))
-            gps.update(donnees_brutes[x])
+                gps.update(donnees_brutes[x])
+        except IndexError:
+            pass
+        
         display.set_pen(0,255,255)
         print('Date: ' , gps.date_string('s_dmy'))
         display.text(gps.date_string('s_dmy'),5,25,240,2)
